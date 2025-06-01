@@ -7,17 +7,11 @@ const MeddiccTool = () => {
   const [notes, setNotes] = useState({});
   const [callPrep, setCallPrep] = useState(new Set());
 
-  // Create icon components that work with the UMD build
-  const createIcon = (iconName) => {
-    const IconComponent = window.LucideReact?.[iconName];
-    return IconComponent ? React.createElement(IconComponent, { size: 20 }) : React.createElement('span', null, '•');
-  };
-
   const sections = {
     metrics: {
       title: 'Metrics',
       subtitle: 'Quantify the Business Impact',
-      icon: createIcon('Target'),
+      icon: '📊',
       color: 'blue',
       questions: [
         "Which engineering KPIs (e.g., lead-time-for-changes, MTTR, deployment frequency) would improve if every dev used a standard Docker Desktop + Docker Scout toolchain?",
@@ -35,7 +29,7 @@ const MeddiccTool = () => {
     economicBuyer: {
       title: 'Economic Buyer',
       subtitle: 'Identify Who Owns the Budget & Value Narrative',
-      icon: createIcon('DollarSign'),
+      icon: '💰',
       color: 'green',
       questions: [
         "Have you earmarked budget for developer tooling or supply-chain security in FY25?",
@@ -51,7 +45,7 @@ const MeddiccTool = () => {
     decisionCriteria: {
       title: 'Decision Criteria',
       subtitle: 'Shape the Required Capabilities',
-      icon: createIcon('CheckCircle'),
+      icon: '✅',
       color: 'purple',
       questions: [
         "Which capabilities must a solution include to deliver both secure supply-chain and developer velocity improvements?",
@@ -69,7 +63,7 @@ const MeddiccTool = () => {
     decisionProcess: {
       title: 'Decision Process',
       subtitle: 'Map the Buying Journey & Paper Process',
-      icon: createIcon('FileText'),
+      icon: '📋',
       color: 'orange',
       questions: [
         "How long did your last developer-platform purchase take, end-to-end?",
@@ -87,7 +81,7 @@ const MeddiccTool = () => {
     implicatePain: {
       title: 'Implicate the Pain',
       subtitle: 'Make Status-Quo Intolerable',
-      icon: createIcon('Lightbulb'),
+      icon: '⚡',
       color: 'red',
       questions: [
         "How do you know container sprawl is a problem today?",
@@ -116,7 +110,7 @@ const MeddiccTool = () => {
     champion: {
       title: 'Champion',
       subtitle: 'Identify & Coach Your Internal Sponsor',
-      icon: createIcon('Users'),
+      icon: '👥',
       color: 'teal',
       questions: [
         "Are they personally impacted by dev environment issues?",
@@ -138,7 +132,7 @@ const MeddiccTool = () => {
     competition: {
       title: 'Competition',
       subtitle: 'Position Against Alternatives',
-      icon: createIcon('Shield'),
+      icon: '🛡️',
       color: 'indigo',
       questions: [
         "Which alternative container solutions (Podman, Buildah, Chainguard, home-grown toolchains) are in use today?",
@@ -254,7 +248,7 @@ const MeddiccTool = () => {
     // Header
     React.createElement('div', { className: "bg-white shadow-sm border-b" },
       React.createElement('div', { className: "max-w-7xl mx-auto px-6 py-6" },
-        React.createElement('div', { className: "flex items-center justify-between" },
+        React.createElement('div', { className: "flex items-center justify-between flex-wrap gap-4" },
           React.createElement('div', null,
             React.createElement('h1', { className: "text-3xl font-bold text-slate-900" }, "Docker Business MEDDICC Discovery Tool"),
             React.createElement('p', { className: "text-slate-600 mt-2" }, "Interactive playbook for qualifying Docker Business opportunities")
@@ -280,10 +274,10 @@ const MeddiccTool = () => {
 
     // Main Content
     React.createElement('div', { className: "max-w-7xl mx-auto px-6 py-6" },
-      React.createElement('div', { className: "grid grid-cols-12 gap-6" },
+      React.createElement('div', { className: "grid grid-cols-1 lg:grid-cols-12 gap-6" },
         
         // Sidebar Navigation
-        React.createElement('div', { className: "col-span-3" },
+        React.createElement('div', { className: "lg:col-span-3" },
           React.createElement('div', { className: "bg-white rounded-xl shadow-sm p-6 sticky top-6" },
             React.createElement('h3', { className: "font-semibold text-slate-900 mb-4" }, "MEDDICC Elements"),
             React.createElement('nav', { className: "space-y-2" },
@@ -297,7 +291,7 @@ const MeddiccTool = () => {
                       : `border-transparent ${getColorClasses(section.color)} border hover:border-slate-200`
                   }`
                 },
-                  section.icon,
+                  React.createElement('span', { className: "text-lg" }, section.icon),
                   React.createElement('div', { className: "flex-1" },
                     React.createElement('div', { className: "font-medium text-sm" }, section.title),
                     React.createElement('div', { className: "text-xs opacity-75" }, `${section.questions.length} questions`)
@@ -325,7 +319,7 @@ const MeddiccTool = () => {
         ),
 
         // Main Content Area
-        React.createElement('div', { className: "col-span-9" },
+        React.createElement('div', { className: "lg:col-span-9" },
           activeSection === 'callPrep' ? 
             // Call Prep View
             React.createElement('div', { className: "bg-white rounded-xl shadow-sm p-6" },
@@ -376,7 +370,7 @@ const MeddiccTool = () => {
             React.createElement('div', { className: "bg-white rounded-xl shadow-sm p-6" },
               React.createElement('div', { className: "flex items-center space-x-4 mb-6" },
                 React.createElement('div', { className: `p-3 rounded-lg ${getColorClasses(sections[activeSection].color, true)}` },
-                  sections[activeSection].icon
+                  React.createElement('span', { className: "text-2xl" }, sections[activeSection].icon)
                 ),
                 React.createElement('div', null,
                   React.createElement('h2', { className: "text-2xl font-bold text-slate-900" }, sections[activeSection].title),
@@ -466,5 +460,8 @@ const MeddiccTool = () => {
 };
 
 // Render the app
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(React.createElement(MeddiccTool));
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(React.createElement(MeddiccTool));
+}
