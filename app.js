@@ -10,7 +10,7 @@ const {
   DollarSign, 
   Lightbulb, 
   Shield 
-} = LucideReact;
+} = window.LucideReact;
 
 const MeddiccTool = () => {
   const [activeSection, setActiveSection] = useState('metrics');
