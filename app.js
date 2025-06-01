@@ -424,7 +424,13 @@ class MeddiccTool {
     }
 }
 
-// Initialize the application
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize the application when DOM is ready
+function initMeddicc() {
     new MeddiccTool();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMeddicc);
+} else {
+    initMeddicc();
+}
