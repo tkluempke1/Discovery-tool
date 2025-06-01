@@ -1,16 +1,5 @@
 
-const { useState, useEffect } = React;
-
-// Access Lucide React icons from the global object
-const Star = window.LucideReact.Star;
-const CheckCircle = window.LucideReact.CheckCircle;
-const Circle = window.LucideReact.Circle;
-const FileText = window.LucideReact.FileText;
-const Target = window.LucideReact.Target;
-const Users = window.LucideReact.Users;
-const DollarSign = window.LucideReact.DollarSign;
-const Lightbulb = window.LucideReact.Lightbulb;
-const Shield = window.LucideReact.Shield;
+const { useState } = React;
 
 const MeddiccTool = () => {
   const [activeSection, setActiveSection] = useState('metrics');
@@ -18,11 +7,17 @@ const MeddiccTool = () => {
   const [notes, setNotes] = useState({});
   const [callPrep, setCallPrep] = useState(new Set());
 
+  // Create icon components that work with the UMD build
+  const createIcon = (iconName) => {
+    const IconComponent = window.LucideReact?.[iconName];
+    return IconComponent ? React.createElement(IconComponent, { size: 20 }) : React.createElement('span', null, '•');
+  };
+
   const sections = {
     metrics: {
       title: 'Metrics',
       subtitle: 'Quantify the Business Impact',
-      icon: React.createElement(Target, { className: "w-5 h-5" }),
+      icon: createIcon('Target'),
       color: 'blue',
       questions: [
         "Which engineering KPIs (e.g., lead-time-for-changes, MTTR, deployment frequency) would improve if every dev used a standard Docker Desktop + Docker Scout toolchain?",
@@ -40,7 +35,7 @@ const MeddiccTool = () => {
     economicBuyer: {
       title: 'Economic Buyer',
       subtitle: 'Identify Who Owns the Budget & Value Narrative',
-      icon: React.createElement(DollarSign, { className: "w-5 h-5" }),
+      icon: createIcon('DollarSign'),
       color: 'green',
       questions: [
         "Have you earmarked budget for developer tooling or supply-chain security in FY25?",
@@ -56,7 +51,7 @@ const MeddiccTool = () => {
     decisionCriteria: {
       title: 'Decision Criteria',
       subtitle: 'Shape the Required Capabilities',
-      icon: React.createElement(CheckCircle, { className: "w-5 h-5" }),
+      icon: createIcon('CheckCircle'),
       color: 'purple',
       questions: [
         "Which capabilities must a solution include to deliver both secure supply-chain and developer velocity improvements?",
@@ -74,7 +69,7 @@ const MeddiccTool = () => {
     decisionProcess: {
       title: 'Decision Process',
       subtitle: 'Map the Buying Journey & Paper Process',
-      icon: React.createElement(FileText, { className: "w-5 h-5" }),
+      icon: createIcon('FileText'),
       color: 'orange',
       questions: [
         "How long did your last developer-platform purchase take, end-to-end?",
@@ -92,7 +87,7 @@ const MeddiccTool = () => {
     implicatePain: {
       title: 'Implicate the Pain',
       subtitle: 'Make Status-Quo Intolerable',
-      icon: React.createElement(Lightbulb, { className: "w-5 h-5" }),
+      icon: createIcon('Lightbulb'),
       color: 'red',
       questions: [
         "How do you know container sprawl is a problem today?",
@@ -121,7 +116,7 @@ const MeddiccTool = () => {
     champion: {
       title: 'Champion',
       subtitle: 'Identify & Coach Your Internal Sponsor',
-      icon: React.createElement(Users, { className: "w-5 h-5" }),
+      icon: createIcon('Users'),
       color: 'teal',
       questions: [
         "Are they personally impacted by dev environment issues?",
@@ -143,7 +138,7 @@ const MeddiccTool = () => {
     competition: {
       title: 'Competition',
       subtitle: 'Position Against Alternatives',
-      icon: React.createElement(Shield, { className: "w-5 h-5" }),
+      icon: createIcon('Shield'),
       color: 'indigo',
       questions: [
         "Which alternative container solutions (Podman, Buildah, Chainguard, home-grown toolchains) are in use today?",
@@ -219,11 +214,8 @@ const MeddiccTool = () => {
 
   const exportNotesToCSV = () => {
     const csvData = [];
-    
-    // Add header row
     csvData.push(['MEDDICC Section', 'Question #', 'Question', 'Notes', 'Starred', 'In Call Prep']);
     
-    // Iterate through all sections and questions
     Object.entries(sections).forEach(([sectionKey, section]) => {
       section.questions.forEach((question, index) => {
         const key = `${sectionKey}-${index}`;
@@ -231,13 +223,12 @@ const MeddiccTool = () => {
         const isStarred = starredQuestions.has(key) ? 'Yes' : 'No';
         const isInCallPrep = callPrep.has(key) ? 'Yes' : 'No';
         
-        // Only include rows that have notes or are starred/in call prep
         if (note || starredQuestions.has(key) || callPrep.has(key)) {
           csvData.push([
             section.title,
             `Q${index + 1}`,
-            `"${question.replace(/"/g, '""')}"`, // Escape quotes in question text
-            `"${note.replace(/"/g, '""')}"`, // Escape quotes in notes
+            `"${question.replace(/"/g, '""')}"`,
+            `"${note.replace(/"/g, '""')}"`,
             isStarred,
             isInCallPrep
           ]);
@@ -245,10 +236,7 @@ const MeddiccTool = () => {
       });
     });
     
-    // Convert to CSV string
     const csvContent = csvData.map(row => row.join(',')).join('\n');
-    
-    // Create and download file
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
@@ -260,190 +248,217 @@ const MeddiccTool = () => {
     document.body.removeChild(link);
   };
 
-  return React.createElement('div', { className: "max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen" },
-    React.createElement('div', { className: "bg-white rounded-lg shadow-lg mb-6 p-6" },
-      React.createElement('h1', { className: "text-3xl font-bold text-gray-900 mb-2" }, "Docker Business MEDDICC Discovery Tool"),
-      React.createElement('p', { className: "text-gray-600 mb-4" }, "Interactive playbook for qualifying, forecasting, and advancing Docker Business opportunities"),
-      React.createElement('div', { className: "bg-blue-50 border-l-4 border-blue-400 p-4 mb-6" },
-        React.createElement('div', { className: "text-sm text-blue-700" },
-          React.createElement('strong', null, "Pro Tip:"),
-          " Star important questions, add them to your call prep, and customize with specific customer data for maximum impact."
-        )
-      )
-    ),
-    React.createElement('div', { className: "grid grid-cols-12 gap-6" },
-      // Navigation Sidebar
-      React.createElement('div', { className: "col-span-3" },
-        React.createElement('div', { className: "bg-white rounded-lg shadow-lg p-4 sticky top-6" },
-          React.createElement('h3', { className: "font-semibold text-gray-900 mb-4" }, "MEDDICC Elements"),
-          React.createElement('nav', { className: "space-y-2" },
-            Object.entries(sections).map(([key, section]) =>
-              React.createElement('button', {
-                key: key,
-                onClick: () => setActiveSection(key),
-                className: `w-full text-left px-3 py-2 rounded-md transition-colors flex items-center space-x-2 border ${
-                  activeSection === key 
-                    ? getColorClasses(section.color, true)
-                    : `border-transparent ${getColorClasses(section.color)}`
-                }`
-              },
-                section.icon,
-                React.createElement('div', null,
-                  React.createElement('div', { className: "font-medium text-sm" }, section.title),
-                  React.createElement('div', { className: "text-xs opacity-75" }, `${section.questions.length} questions`)
-                )
-              )
-            )
+  return React.createElement('div', { 
+    className: "min-h-screen bg-gradient-to-br from-slate-50 to-blue-50" 
+  },
+    // Header
+    React.createElement('div', { className: "bg-white shadow-sm border-b" },
+      React.createElement('div', { className: "max-w-7xl mx-auto px-6 py-6" },
+        React.createElement('div', { className: "flex items-center justify-between" },
+          React.createElement('div', null,
+            React.createElement('h1', { className: "text-3xl font-bold text-slate-900" }, "Docker Business MEDDICC Discovery Tool"),
+            React.createElement('p', { className: "text-slate-600 mt-2" }, "Interactive playbook for qualifying Docker Business opportunities")
           ),
-          React.createElement('div', { className: "mt-6 pt-4 border-t" },
-            React.createElement('h4', { className: "font-medium text-gray-900 mb-2" }, "Call Prep"),
-            React.createElement('div', { className: "text-sm text-gray-600 mb-2" }, `${callPrep.size} questions selected`),
-            callPrep.size > 0 && React.createElement('button', {
-              onClick: () => setActiveSection('callPrep'),
-              className: "mb-2 w-full px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors text-sm"
-            }, "View Call Prep"),
+          React.createElement('div', { className: "flex items-center space-x-3" },
+            React.createElement('div', { className: "text-sm text-slate-600" },
+              `${callPrep.size} questions in call prep`
+            ),
             React.createElement('button', {
               onClick: exportNotesToCSV,
-              className: "w-full px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm"
-            }, "Export Notes to CSV")
+              className: "px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+            }, "Export Notes")
+          )
+        ),
+        React.createElement('div', { className: "bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6" },
+          React.createElement('div', { className: "text-sm text-blue-700" },
+            React.createElement('strong', null, "Pro Tip: "),
+            "Star important questions, add them to your call prep, and customize with specific customer data for maximum impact."
           )
         )
-      ),
-      // Main Content
-      React.createElement('div', { className: "col-span-9" },
-        activeSection === 'callPrep' ? 
-          // Call Prep View
-          React.createElement('div', { className: "bg-white rounded-lg shadow-lg p-6" },
-            React.createElement('div', { className: "flex justify-between items-center mb-4" },
-              React.createElement('div', null,
-                React.createElement('h2', { className: "text-2xl font-bold text-gray-900" }, "Call Preparation"),
-                React.createElement('p', { className: "text-gray-600" }, "Questions selected for your next discovery call")
-              ),
-              React.createElement('button', {
-                onClick: exportNotesToCSV,
-                className: "px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium"
-              }, "Export All Notes")
-            ),
-            getCallPrepQuestions().length === 0 ?
-              React.createElement('div', { className: "text-center py-8 text-gray-500" },
-                React.createElement(Circle, { className: "w-12 h-12 mx-auto mb-4 opacity-50" }),
-                React.createElement('p', null, "No questions selected for call prep yet."),
-                React.createElement('p', { className: "text-sm" }, "Use the checkboxes in each section to add questions.")
-              ) :
-              React.createElement('div', { className: "space-y-4" },
-                getCallPrepQuestions().map((item, index) =>
-                  React.createElement('div', { key: item.key, className: "border rounded-lg p-4" },
-                    React.createElement('div', { className: "flex justify-between items-start mb-2" },
-                      React.createElement('span', { className: "text-sm font-medium text-indigo-600" }, item.section),
-                      React.createElement('button', {
-                        onClick: () => {
-                          const [sectionKey, questionIndex] = item.key.split('-');
-                          toggleCallPrep(sectionKey, parseInt(questionIndex));
-                        },
-                        className: "text-red-500 hover:text-red-700"
-                      }, "Remove")
-                    ),
-                    React.createElement('p', { className: "text-gray-800 mb-2" }, item.question),
-                    React.createElement('textarea', {
-                      placeholder: "Add notes or customize this question...",
-                      className: "w-full p-2 border border-gray-300 rounded-md text-sm",
-                      rows: "2",
-                      value: notes[item.key] || '',
-                      onChange: (e) => {
-                        const [sectionKey, questionIndex] = item.key.split('-');
-                        updateNote(sectionKey, parseInt(questionIndex), e.target.value);
-                      }
-                    })
+      )
+    ),
+
+    // Main Content
+    React.createElement('div', { className: "max-w-7xl mx-auto px-6 py-6" },
+      React.createElement('div', { className: "grid grid-cols-12 gap-6" },
+        
+        // Sidebar Navigation
+        React.createElement('div', { className: "col-span-3" },
+          React.createElement('div', { className: "bg-white rounded-xl shadow-sm p-6 sticky top-6" },
+            React.createElement('h3', { className: "font-semibold text-slate-900 mb-4" }, "MEDDICC Elements"),
+            React.createElement('nav', { className: "space-y-2" },
+              Object.entries(sections).map(([key, section]) =>
+                React.createElement('button', {
+                  key: key,
+                  onClick: () => setActiveSection(key),
+                  className: `w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center space-x-3 border ${
+                    activeSection === key 
+                      ? getColorClasses(section.color, true) + ' shadow-sm'
+                      : `border-transparent ${getColorClasses(section.color)} border hover:border-slate-200`
+                  }`
+                },
+                  section.icon,
+                  React.createElement('div', { className: "flex-1" },
+                    React.createElement('div', { className: "font-medium text-sm" }, section.title),
+                    React.createElement('div', { className: "text-xs opacity-75" }, `${section.questions.length} questions`)
                   )
                 )
               )
-          ) :
-          // Section View
-          React.createElement('div', { className: "bg-white rounded-lg shadow-lg p-6" },
-            React.createElement('div', { className: "flex items-center space-x-3 mb-6" },
-              sections[activeSection].icon,
-              React.createElement('div', null,
-                React.createElement('h2', { className: "text-2xl font-bold text-gray-900" }, sections[activeSection].title),
-                React.createElement('p', { className: "text-gray-600" }, sections[activeSection].subtitle)
-              )
             ),
-            React.createElement('div', { className: "space-y-4" },
-              sections[activeSection].questions.map((question, index) => {
-                const questionKey = `${activeSection}-${index}`;
-                const isStarred = starredQuestions.has(questionKey);
-                const isInCallPrep = callPrep.has(questionKey);
-                
-                return React.createElement('div', { key: index, className: "border rounded-lg p-4 hover:bg-gray-50 transition-colors" },
-                  React.createElement('div', { className: "flex items-start justify-between mb-3" },
-                    React.createElement('div', { className: "flex items-center space-x-3 flex-1" },
-                      React.createElement('span', { className: "text-sm font-medium text-gray-500 min-w-fit" }, `Q${index + 1}`),
-                      React.createElement('p', { className: "text-gray-800 leading-relaxed" }, question)
-                    ),
-                    React.createElement('div', { className: "flex items-center space-x-2 ml-4" },
-                      React.createElement('button', {
-                        onClick: () => toggleStar(activeSection, index),
-                        className: `p-1 rounded ${isStarred ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'}`,
-                        title: "Star this question"
-                      },
-                        isStarred ? 
-                          React.createElement(Star, { className: "w-5 h-5 fill-yellow-500 text-yellow-500" }) : 
-                          React.createElement(Star, { className: "w-5 h-5" })
-                      ),
-                      React.createElement('button', {
-                        onClick: () => toggleCallPrep(activeSection, index),
-                        className: `p-1 rounded ${isInCallPrep ? 'text-green-600' : 'text-gray-400 hover:text-green-500'}`,
-                        title: "Add to call prep"
-                      },
-                        isInCallPrep ? 
-                          React.createElement(CheckCircle, { className: "w-5 h-5 fill-current" }) : 
-                          React.createElement(Circle, { className: "w-5 h-5" })
-                      )
-                    )
-                  ),
-                  React.createElement('div', { className: "ml-8" },
-                    React.createElement('textarea', {
-                      placeholder: "Customize this question or add notes...",
-                      className: "w-full p-3 border border-gray-200 rounded-md text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-                      rows: "2",
-                      value: notes[questionKey] || '',
-                      onChange: (e) => updateNote(activeSection, index, e.target.value)
-                    })
-                  )
-                );
-              })
+            
+            // Call Prep Section
+            React.createElement('div', { className: "mt-6 pt-6 border-t border-slate-200" },
+              React.createElement('h4', { className: "font-medium text-slate-900 mb-3" }, "Call Preparation"),
+              React.createElement('div', { className: "text-sm text-slate-600 mb-3" },
+                `${callPrep.size} questions selected`
+              ),
+              callPrep.size > 0 && React.createElement('button', {
+                onClick: () => setActiveSection('callPrep'),
+                className: "w-full mb-3 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
+              }, "View Call Prep"),
+              React.createElement('button', {
+                onClick: exportNotesToCSV,
+                className: "w-full px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm font-medium"
+              }, "Export All Notes")
             )
           )
+        ),
+
+        // Main Content Area
+        React.createElement('div', { className: "col-span-9" },
+          activeSection === 'callPrep' ? 
+            // Call Prep View
+            React.createElement('div', { className: "bg-white rounded-xl shadow-sm p-6" },
+              React.createElement('div', { className: "flex justify-between items-center mb-6" },
+                React.createElement('div', null,
+                  React.createElement('h2', { className: "text-2xl font-bold text-slate-900" }, "Call Preparation"),
+                  React.createElement('p', { className: "text-slate-600" }, "Questions selected for your next discovery call")
+                )
+              ),
+              
+              getCallPrepQuestions().length === 0 ?
+                React.createElement('div', { className: "text-center py-12 text-slate-500" },
+                  React.createElement('div', { className: "text-4xl mb-4" }, "📋"),
+                  React.createElement('p', { className: "text-lg mb-2" }, "No questions selected for call prep yet."),
+                  React.createElement('p', { className: "text-sm" }, "Use the circle buttons in each section to add questions.")
+                ) :
+                React.createElement('div', { className: "space-y-4" },
+                  getCallPrepQuestions().map((item, index) =>
+                    React.createElement('div', { key: item.key, className: "border border-slate-200 rounded-lg p-4 hover:shadow-sm transition-shadow" },
+                      React.createElement('div', { className: "flex justify-between items-start mb-3" },
+                        React.createElement('span', { className: "text-sm font-medium text-indigo-600 bg-indigo-50 px-2 py-1 rounded" }, 
+                          item.section
+                        ),
+                        React.createElement('button', {
+                          onClick: () => {
+                            const [sectionKey, questionIndex] = item.key.split('-');
+                            toggleCallPrep(sectionKey, parseInt(questionIndex));
+                          },
+                          className: "text-red-500 hover:text-red-700 text-sm"
+                        }, "Remove")
+                      ),
+                      React.createElement('p', { className: "text-slate-800 mb-3 leading-relaxed" }, item.question),
+                      React.createElement('textarea', {
+                        placeholder: "Add notes or customize this question...",
+                        className: "w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none",
+                        rows: "3",
+                        value: notes[item.key] || '',
+                        onChange: (e) => {
+                          const [sectionKey, questionIndex] = item.key.split('-');
+                          updateNote(sectionKey, parseInt(questionIndex), e.target.value);
+                        }
+                      })
+                    )
+                  )
+                )
+            ) :
+            // Section View
+            React.createElement('div', { className: "bg-white rounded-xl shadow-sm p-6" },
+              React.createElement('div', { className: "flex items-center space-x-4 mb-6" },
+                React.createElement('div', { className: `p-3 rounded-lg ${getColorClasses(sections[activeSection].color, true)}` },
+                  sections[activeSection].icon
+                ),
+                React.createElement('div', null,
+                  React.createElement('h2', { className: "text-2xl font-bold text-slate-900" }, sections[activeSection].title),
+                  React.createElement('p', { className: "text-slate-600" }, sections[activeSection].subtitle)
+                )
+              ),
+
+              React.createElement('div', { className: "space-y-6" },
+                sections[activeSection].questions.map((question, index) => {
+                  const questionKey = `${activeSection}-${index}`;
+                  const isStarred = starredQuestions.has(questionKey);
+                  const isInCallPrep = callPrep.has(questionKey);
+                  
+                  return React.createElement('div', { 
+                    key: index, 
+                    className: "border border-slate-200 rounded-lg p-5 hover:shadow-sm transition-all duration-200" 
+                  },
+                    React.createElement('div', { className: "flex items-start justify-between mb-4" },
+                      React.createElement('div', { className: "flex items-start space-x-4 flex-1" },
+                        React.createElement('span', { 
+                          className: "text-sm font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded min-w-fit" 
+                        }, `Q${index + 1}`),
+                        React.createElement('p', { className: "text-slate-800 leading-relaxed" }, question)
+                      ),
+                      React.createElement('div', { className: "flex items-center space-x-2 ml-4" },
+                        React.createElement('button', {
+                          onClick: () => toggleStar(activeSection, index),
+                          className: `p-2 rounded-lg transition-colors ${isStarred ? 'text-yellow-500 bg-yellow-50' : 'text-slate-400 hover:text-yellow-500 hover:bg-yellow-50'}`,
+                          title: "Star this question"
+                        }, isStarred ? '⭐' : '☆'),
+                        React.createElement('button', {
+                          onClick: () => toggleCallPrep(activeSection, index),
+                          className: `p-2 rounded-lg transition-colors ${isInCallPrep ? 'text-green-600 bg-green-50' : 'text-slate-400 hover:text-green-500 hover:bg-green-50'}`,
+                          title: "Add to call prep"
+                        }, isInCallPrep ? '✓' : '○')
+                      )
+                    ),
+                    
+                    React.createElement('div', { className: "ml-12" },
+                      React.createElement('textarea', {
+                        placeholder: "Customize this question or add notes...",
+                        className: "w-full p-3 border border-slate-300 rounded-lg text-sm resize-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent",
+                        rows: "3",
+                        value: notes[questionKey] || '',
+                        onChange: (e) => updateNote(activeSection, index, e.target.value)
+                      })
+                    )
+                  );
+                })
+              )
+            )
+        )
       )
     ),
-    // Best Practices Footer
-    React.createElement('div', { className: "mt-8 bg-white rounded-lg shadow-lg p-6" },
-      React.createElement('h3', { className: "text-lg font-semibold text-gray-900 mb-4" }, "Best Practices & Next Steps"),
-      React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-700" },
-        React.createElement('div', null,
-          React.createElement('h4', { className: "font-medium text-gray-900 mb-2" }, "Before Every Call"),
-          React.createElement('ul', { className: "space-y-1" },
-            React.createElement('li', null, "• Pick 2–3 questions per MEDDICC element"),
-            React.createElement('li', null, "• Avoid interrogations—make it conversational"),
-            React.createElement('li', null, "• Customize questions with specific customer data")
+
+    // Footer
+    React.createElement('div', { className: "bg-white border-t mt-8" },
+      React.createElement('div', { className: "max-w-7xl mx-auto px-6 py-8" },
+        React.createElement('h3', { className: "text-lg font-semibold text-slate-900 mb-6" }, "Best Practices & Next Steps"),
+        React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-slate-700" },
+          React.createElement('div', null,
+            React.createElement('h4', { className: "font-medium text-slate-900 mb-3" }, "Before Every Call"),
+            React.createElement('ul', { className: "space-y-2" },
+              React.createElement('li', null, "• Pick 2–3 questions per MEDDICC element"),
+              React.createElement('li', null, "• Avoid interrogations—make it conversational"),
+              React.createElement('li', null, "• Customize questions with specific customer data")
+            )
+          ),
+          React.createElement('div', null,
+            React.createElement('h4', { className: "font-medium text-slate-900 mb-3" }, "After Each Call"),
+            React.createElement('ul', { className: "space-y-2" },
+              React.createElement('li', null, "• Map answers into Salesforce MEDDICC fields"),
+              React.createElement('li', null, "• Score health and update close plan"),
+              React.createElement('li', null, "• Use Docker Scout to show quantified value")
+            )
           )
         ),
-        React.createElement('div', null,
-          React.createElement('h4', { className: "font-medium text-gray-900 mb-2" }, "After Each Call"),
-          React.createElement('ul', { className: "space-y-1" },
-            React.createElement('li', null, "• Map answers into Salesforce MEDDICC fields"),
-            React.createElement('li', null, "• Score health and update close plan"),
-            React.createElement('li', null, "• Use Docker Scout to show quantified value")
+        React.createElement('div', { className: "mt-6 p-4 bg-blue-50 rounded-lg" },
+          React.createElement('p', { className: "text-sm text-blue-700" },
+            React.createElement('strong', null, "Remember: "),
+            "Pair this discovery guide with the Docker Business ROI Calculator to translate pains & metrics into dollars for the Economic Buyer."
           )
-        )
-      ),
-      React.createElement('div', { className: "mt-4 p-4 bg-blue-50 rounded-md" },
-        React.createElement('p', { className: "text-sm text-blue-700 mb-2" },
-          React.createElement('strong', null, "Remember:"),
-          " Pair this discovery guide with the Docker Business ROI Calculator to translate pains & metrics into dollars for the Economic Buyer."
-        ),
-        React.createElement('p', { className: "text-sm text-blue-700" },
-          React.createElement('strong', null, "Export Feature:"),
-          " Use the \"Export Notes to CSV\" button to download all your customized questions, notes, starred items, and call prep selections for easy sharing or CRM import."
         )
       )
     )
