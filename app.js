@@ -1,16 +1,16 @@
 
 const { useState, useEffect } = React;
-const { 
-  Star, 
-  CheckCircle, 
-  Circle, 
-  FileText, 
-  Target, 
-  Users, 
-  DollarSign, 
-  Lightbulb, 
-  Shield 
-} = window.LucideReact;
+
+// Access Lucide React icons from the global object
+const Star = window.LucideReact.Star;
+const CheckCircle = window.LucideReact.CheckCircle;
+const Circle = window.LucideReact.Circle;
+const FileText = window.LucideReact.FileText;
+const Target = window.LucideReact.Target;
+const Users = window.LucideReact.Users;
+const DollarSign = window.LucideReact.DollarSign;
+const Lightbulb = window.LucideReact.Lightbulb;
+const Shield = window.LucideReact.Shield;
 
 const MeddiccTool = () => {
   const [activeSection, setActiveSection] = useState('metrics');
