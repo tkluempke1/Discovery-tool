@@ -5,21 +5,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Docker Business MEDDICC Discovery Tool</title>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .section-icon { 
-            width: 20px; 
-            height: 20px; 
-            display: inline-block; 
-            text-align: center; 
-            font-weight: bold;
+        .section-active {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+            color: #1e40af;
+        }
+        .question-card {
+            transition: all 0.2s ease;
+        }
+        .question-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+        .starred {
+            color: #f59e0b;
+        }
+        .in-prep {
+            color: #10b981;
         }
     </style>
 </head>
-<body>
-    <div id="root"></div>
+<body class="bg-gray-50">
+    <div id="app">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-6 py-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Docker Business MEDDICC Discovery Tool</h1>
+                        <p class="text-gray-600 mt-2">Interactive playbook for qualifying Docker Business opportunities</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span id="prep-counter" class="text-sm text-gray-600">0 questions in call prep</span>
+                        <button id="export-btn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
+                            Export Notes
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
+                    <div class="text-sm text-blue-700">
+                        <strong>Pro Tip:</strong> Star important questions, add them to your call prep, and customize with specific customer data for maximum impact.
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-6 py-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Sidebar -->
+                <aside class="lg:col-span-3">
+                    <div class="bg-white rounded-xl shadow-sm p-6 sticky top-6">
+                        <h3 class="font-semibold text-gray-900 mb-4">MEDDICC Elements</h3>
+                        <nav id="nav-menu" class="space-y-2">
+                            <!-- Navigation will be populated by JavaScript -->
+                        </nav>
+                        
+                        <div class="mt-6 pt-6 border-t border-gray-200">
+                            <h4 class="font-medium text-gray-900 mb-3">Call Preparation</h4>
+                            <div id="prep-status" class="text-sm text-gray-600 mb-3">0 questions selected</div>
+                            <button id="view-prep-btn" class="w-full mb-3 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium">
+                                View Call Prep
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Content Area -->
+                <section class="lg:col-span-9">
+                    <div id="content-area" class="bg-white rounded-xl shadow-sm p-6">
+                        <!-- Content will be populated by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t mt-8">
+            <div class="max-w-7xl mx-auto px-6 py-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-6">Best Practices & Next Steps</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-gray-700">
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-3">Before Every Call</h4>
+                        <ul class="space-y-2">
+                            <li>• Pick 2–3 questions per MEDDICC element</li>
+                            <li>• Avoid interrogations—make it conversational</li>
+                            <li>• Customize questions with specific customer data</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-3">After Each Call</h4>
+                        <ul class="space-y-2">
+                            <li>• Map answers into Salesforce MEDDICC fields</li>
+                            <li>• Score health and update close plan</li>
+                            <li>• Use Docker Scout to show quantified value</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-blue-700">
+                        <strong>Remember:</strong> Pair this discovery guide with the Docker Business ROI Calculator to translate pains & metrics into dollars for the Economic Buyer.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>
