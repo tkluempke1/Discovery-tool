@@ -1,0 +1,116 @@
+Can you turn this into an interactive asset for my sales team?
+“Docker Business MEDDICC-Oriented Discovery Guide
+A practical, question-driven playbook for qualifying, forecasting, and advancing Docker Business opportunities
+⸻
+How to Use This Guide
+Section    Purpose
+Assumption    You are operating in a sales org that uses MEDDICC as its primary qualification framework and have a solid grasp of each component. This version translates generic discovery prompts into Docker-specific language so you can surface developer-productivity and software-supply-chain-security value quickly.
+Meeting Preparation    Use the ~80 example questions below to plan discovery calls, pre-read emails, or executive briefings. Star or highlight the 3–5 most relevant questions for this buyer persona, stage, and account maturity (e.g., green-field vs. competitive displacement).
+Customization    Each prompt is templated. Swap the X, Y, or metric names with concrete data from public filings, GitHub repos, incident post-mortems, or Docker Scout scans to boost credibility.
+Example – Implicate the Pain → “In your June ‘24 status report you mentioned a 17-hour mean time to remediate CVEs in production. How does that impact release velocity today?” |
+⸻
+M – Metrics (Quantify the Business Impact)
+    1.    Which engineering KPIs (e.g., lead-time-for-changes, MTTR, deployment frequency) would improve if every dev used a standard Docker Desktop + Docker Scout toolchain?
+    2.    What revenue-critical services are blocked when container images fail security checks today?
+    3.    What percent of your developer workday is lost to environment drift or “works on my machine” issues?
+    4.    If we automated software-supply-chain scanning with Docker Business, how many high-severity CVEs could you remediate per sprint?
+    5.    How will you measure success for this initiative—cycle-time reduction, CVE backlog burn-down, or something else?
+    6.    Where do container misconfigurations currently surface in your incident-cost model (S1 downtime, SLA penalties, on-call hours)?
+    7.    What’s the $ cost of maintaining multiple community editions versus a single managed subscription?
+    8.    Where would you like that cost/KPI to be in 12 months?
+    9.    Assuming you implemented Docker Business next quarter, what tangible business results would you call out in your next Ops review?
+    10.    How would a best-in-class container platform influence your Net Promoter Score with engineering teams?
+⸻
+E – Economic Buyer (Identify Who Owns the Budget & Value Narrative)
+    1.    Have you earmarked budget for developer tooling or supply-chain security in FY25?
+    2.    How did you arrive at that figure? Was it based on incident cost or head-count productivity?
+    3.    Which line-item (Dev Ops, AppSec, Cloud Ops) and which executive ultimately signs off on tooling that touches security and productivity?
+    4.    Who is held accountable for the DevEx OKR we discussed earlier?
+    5.    Which executive’s objectives are most impacted by environment drift or slow CVE remediation?
+    6.    Who has final authority to approve a multi-year Docker Business subscription?
+    7.    Who could veto the deal if they felt open-source Podman was “good enough”?
+    8.    In the last 3 purchases over $100 k, how many times did the CFO push back for a stronger ROI model?
+⸻
+D – Decision Criteria (Shape the Required Capabilities)
+    1.    Which capabilities must a solution include to deliver both secure supply-chain and developer velocity improvements?
+    2.    What does your team need that they don’t get from the community edition today (e.g., SSO/SAML, centralized billing, image SBOMs)?
+    3.    Is FIPS-validated crypto a non-negotiable requirement for production workloads?
+    4.    Beyond security, what other pains should the platform resolve—license compliance, usage analytics, role-based access?
+    5.    In an ideal world, how would onboarding new devs day 1 work?
+    6.    Rank the importance of these factors: time-to-value, support SLAs, depth of ecosystem, cost per seat.
+    7.    What criteria define an ideal enterprise container platform for your organization?
+    8.    If price matters most, what premium would justify Docker’s integrated DevEx + security bundle over point tools?
+    9.    When we work with companies like Stripe and Amgen, they require auditable SBOMs, granular RBAC, and 4-hour support. How do those map to your needs?
+    10.    Will you need the chosen vendor to provide an attested base image pipeline (Hardened Images)?
+⸻
+D – Decision Process (Map the Buying Journey & Paper Process)
+    1.    How long did your last developer-platform purchase take, end-to-end?
+    2.    Who else (Security, Platform Eng, Finance) must be on board?
+    3.    Can you outline each approval gate—from proof of value (POV) to red-line legal?
+    4.    Who influences technical validation vs. commercial terms at each step?
+    5.    Which documents (DPA, EULA, InfoSec questionnaire) need sign-off before PO issuance?
+    6.    What could accelerate or stall the process—penetration test results, SOC 2 report, internal freeze?
+    7.    Besides yourself, who needs to approve spend >$50 k annually?
+    8.    What timeline are you targeting to hit production readiness before Kubernetes migration phase 2?
+    9.    If we deliver a successful 30-day POV, what happens next?
+    10.    Will procurement require a competitive RFP or can you sole-source based on POV results?
+⸻
+I – Implicate the Pain (Make Status-Quo Intolerable)
+Current & Future State
+    1.    How do you know container sprawl is a problem today?
+    2.    How often do image-based vulnerabilities delay releases?
+    3.    Why do you think environment drift keeps recurring despite existing scripts?
+    4.    Where does this problem manifest—build pipelines, production, developer laptops?
+    5.    What blocked previous attempts to standardize on a single platform?
+    6.    Where does solving this rank among FY25 engineering priorities?
+    7.    What are your goals around secure software supply chain this year?
+    8.    How do you quantify the impact of late CVE remediation today?
+    9.    Who else feels this pain—AppSec, Compliance, Dev Ops Management?
+    10.    Which strategic outcomes (e.g., faster FedRAMP path, reduced audit fatigue) are you targeting?
+Positive Outcomes & Negative Consequences
+    1.    How does inconsistent tooling impact on-call burnout or new-hire ramp?
+    2.    Have you tried “DIY” hardening? What did that cost in head-count?
+    3.    What is the annual cost of unresolved vulnerabilities (breach risk, patch cycles, reputation)?
+    4.    What would automated SBOMs and policy gates enable for you?
+    5.    If nothing changes in 12 months, what does that mean for cloud spend or innovation goals?
+    6.    On a scale of 1–10, how mission-critical is solving this before your next SOC 2 Type 2 audit?
+Pressing on “Why Now & Why Docker?”
+    1.    Why solve this before the next major product launch?
+    2.    What event or deadline forces resolution (board mandate, regulatory audit)?
+    3.    What’s different this time—new executive mandate, breach near-miss, budget availability?
+    4.    You’ve used open-source images for years; why not stay that course?
+    5.    What might block you from adopting Docker Business this quarter?
+⸻
+C – Champion (Identify & Coach Your Internal Sponsor)
+Identifying Potential Champions
+    1.    Are they personally impacted by dev environment issues?
+    2.    Do they own a key transformation project (K8s, SBOM compliance)?
+    3.    If new to the org, do they have a mandate for change?
+    4.    Have they led large Dev Ops tooling purchases before?
+    5.    Do executives consult them on container strategy?
+    6.    Do peers validate their influence?
+Assessing If You Have a Champion
+    1.    Do they secure you access to the Economic Buyer and Security lead?
+    2.    Do they help prep for technical deep-dives?
+    3.    Are they sharing intel on competing options (Podman, Chainguard)?
+    4.    Do they respond swiftly to emails/slack—are you texting?
+    5.    Will they present POV outcomes to leadership on your behalf?
+    6.    Are they openly challenging detractors?
+    7.    Will they help build a business case and ROI model?
+    8.    Can they articulate why Docker’s differentiators matter?
+⸻
+C – Competition (Position Against Alternatives)
+    1.    Which alternative container solutions (Podman, Buildah, Chainguard, home-grown toolchains) are in use today?
+    2.    What do stakeholders like/dislike about those options?
+    3.    How important is having all-in-one DevEx & security versus stitching point tools?
+    4.    Has another vendor set the decision criteria or price anchor?
+    5.    If Docker outperforms in POV, what would prompt you to choose a competitor anyway?
+    6.    How will you evaluate vendor roadmaps and community ecosystem health?
+    7.    What concerns exist about vendor lock-in, and how can we address them?”
+⸻
+Next Steps & Best Practices
+    •    Before every call – pick 2–3 questions per MEDDICC element; avoid interrogations.
+    •    After each call – map answers into Salesforce MEDDICC fields, score health, and update close plan.
+    •    Leverage Docker Scout & Hardened Images during discovery to show value (scan customer images, quantify risk).
+    •    Practice – Role-play with peers; refine phrasing for different personas (Developer vs. CISO).
+Pro-Tip: Pair this guide with the Docker Business ROI Calculator to translate pains & metrics into dollars for the Economic Buyer.
